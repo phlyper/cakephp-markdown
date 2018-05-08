@@ -2,6 +2,7 @@
 namespace Tanuck\Markdown\View\Helper;
 
 use Cake\View\Helper;
+use Cake\Core\Configure;
 
 /**
  * Markdown Helper
@@ -33,7 +34,11 @@ class MarkdownHelper extends Helper
         }
 
         if (!isset($this->parser)) {
-            $className = "cebe\\markdown\\{$this->config('parser')}";
+            if(Configure::version() >= "3.6.") {
+                $className = "cebe\\markdown\\{$this->getConfig('parser')}";
+            } else {
+                $className = "cebe\\markdown\\{$this->config('parser')}";
+            }
             $this->parser = new $className();
             $this->parser->html5 = true;
         }
